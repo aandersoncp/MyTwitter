@@ -11,7 +11,7 @@ public class MyTwitter implements ITwitter{
     
     private IRepositorioUsuario repositorio;
     
-    public void MyTwitter(){
+    public MyTwitter(){
         this.repositorio =  new Repositorio();
     }
     
