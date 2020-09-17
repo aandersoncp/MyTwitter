@@ -1,10 +1,8 @@
 package mytwitter.repositorio;
 
+import excecoes.UJCException;
+import excecoes.UNCException;
 import mytwitter.perfil.Perfil;
-import mytwitter.perfil.PessoaFisica;
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Repositorio implements IRepositorioUsuario{
@@ -35,21 +33,51 @@ public class Repositorio implements IRepositorioUsuario{
     }
 
     @Override
-    public void atualizar(Perfil usuario) {
-        System.out.println("O que você deseja atualizar?");
+    public void atualizar(Perfil conta) throws UNCException{
+        boolean achou = false;
+        int i = 0;
+        while(achou == false && i < contas.size()){
+            if(conta.getUsuario().equals(contas.get(i).getUsuario())){
+                achou = true;
+            } else{
+                i++;
+            }
+        }
+        if(!achou){
+            throw new UNCException(conta.getUsuario());
+        } else{
+            //Escrever informações do usuário no arquivo dados.
+        }
     }
     
     @Override
-    public void cadastrar(Perfil conta) {
-        contas.add(conta);
-        System.out.println(conta.getUsuario() + " cadastrado");
-        //Escrever informações do usuário no arquivo dados.
+    public void cadastrar(Perfil conta) throws UJCException{
+        boolean achou = false;
+        int i = 0;
+        while(achou == false && i < contas.size()){
+            if(conta.getUsuario().equals(contas.get(i).getUsuario())){
+                achou = true;
+            } else{
+                i++;
+            }
         }
-    public static void main(String[] args){
-        System.out.println("Oi");
-        Repositorio rep = new Repositorio();
-        PessoaFisica anderson = new PessoaFisica("Anderson");
-        rep.cadastrar(anderson);
+        if(achou){
+            throw new UJCException(conta.getUsuario());
+        } else{
+            contas.add(conta);
+            System.out.println("Usuário " + conta.getUsuario() + " cadastrado.");
+            //Escrever informações do usuário no arquivo dados.
+        }
+      
     }
+    
+    public void listar(){
+        int i = 0;
+        while(i < contas.size()){
+            System.out.println("Usuário: " + contas.get(i).getUsuario());
+            i++;
+        }
+    }
+
     
 }

@@ -1,23 +1,30 @@
 package mytwitter;
 
+import excecoes.MFPException;
+import excecoes.PDException;
+import excecoes.PEException;
+import excecoes.PIException;
+import excecoes.SIException;
+import excecoes.UJCException;
 import mytwitter.perfil.tweet.Tweet;
 import mytwitter.perfil.Perfil;
 import java.util.Vector;
 
 public interface ITwitter {
-    public void criarPerfil(Perfil usuario);
     
-    public void cancelarPerfil(String usuario);
+    public void criarPerfil(Perfil usuario) throws UJCException, PEException;
     
-    public void tweetar(String usuario, String mensagem);
+    public void cancelarPerfil(String usuario) throws PIException, PDException;
     
-    public Vector<Tweet> timeline(String usuario);
+    public void tweetar(String usuario, String mensagem) throws PIException, MFPException;
     
-    public Vector<Tweet> tweets(String usuario);
+    public Vector<Tweet> timeline(String usuario) throws PIException, PDException;
     
-    public void seguir(String seguidor, String seguido);
+    public Vector<Tweet> tweets(String usuario) throws PIException, PDException;
     
-    public int numeroSeguidor(String usuario);
+    public void seguir(String seguidor, String seguido) throws PIException, PDException, SIException;
     
-    public Vector<Perfil> seguidores(String usuario);
+    public int numeroSeguidor(String usuario) throws PIException, PDException;
+    
+    public Vector<Perfil> seguidores(String usuario) throws PIException, PDException;
 }
