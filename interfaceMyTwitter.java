@@ -5,11 +5,20 @@
  */
 package interfaceGrafica;
 
+import excecoes.MFPException;
+import excecoes.PDException;
 import excecoes.PEException;
+import excecoes.PIException;
+import excecoes.SIException;
 import excecoes.UJCException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mytwitter.MyTwitter;
 import mytwitter.perfil.Perfil;
 import mytwitter.perfil.PessoaFisica;
+import mytwitter.perfil.tweet.Tweet;
 
 /**
  *
@@ -40,15 +49,17 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         textoCriarPerfil = new javax.swing.JTextField();
         bCriarPerfil = new javax.swing.JButton();
-        Tweets = new javax.swing.JButton();
         bSeguir = new javax.swing.JButton();
         bTimeline = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        bCancelarPerfil = new javax.swing.JButton();
+        textoSeguir = new javax.swing.JTextField();
+        textoUsuarioSeguir = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         textoUsuario = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textoTweetAtual = new javax.swing.JTextArea();
         bTweetar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textoTweetAtual = new javax.swing.JEditorPane();
+        lista = new java.awt.List();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,13 +81,6 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
             }
         });
 
-        Tweets.setText("Tweets");
-        Tweets.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TweetsActionPerformed(evt);
-            }
-        });
-
         bSeguir.setText("Seguir");
         bSeguir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,51 +95,57 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Cancelar Perfil");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        bCancelarPerfil.setText("Cancelar Perfil");
+        bCancelarPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                bCancelarPerfilActionPerformed(evt);
             }
         });
+
+        textoSeguir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textoSeguirActionPerformed(evt);
+            }
+        });
+
+        textoUsuarioSeguir.setText("Usuário: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textoProcurarUsuario)
-                            .addComponent(textoCriarPerfil)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(textoProcurarUsuario, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(21, 21, 21)
+                                    .addComponent(labelBuscar))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(35, 35, 35)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(bBuscar)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(44, 44, 44)
+                                    .addComponent(bCriarPerfil))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(19, 19, 19)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(bTimeline)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(textoUsuarioSeguir)
+                                            .addComponent(bSeguir))))))
+                        .addGap(63, 63, 63))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(labelBuscar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(bBuscar)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(bTimeline))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Tweets)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(9, 9, 9)
-                                        .addComponent(bCriarPerfil))
-                                    .addComponent(bSeguir))))
-                        .addGap(0, 20, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bCancelarPerfil)
+                            .addComponent(textoSeguir, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                            .addComponent(textoCriarPerfil))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,30 +154,28 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
                 .addComponent(labelBuscar)
                 .addGap(18, 18, 18)
                 .addComponent(textoProcurarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bBuscar)
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(textoCriarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bCriarPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Tweets)
+                .addComponent(textoSeguir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(textoUsuarioSeguir)
+                .addGap(15, 15, 15)
                 .addComponent(bSeguir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bTimeline)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(bTimeline)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(bCancelarPerfil)
+                .addContainerGap())
         );
 
         textoUsuario.setText("Nome: ");
-
-        textoTweetAtual.setColumns(20);
-        textoTweetAtual.setRows(5);
-        jScrollPane1.setViewportView(textoTweetAtual);
 
         bTweetar.setText("Tweetar");
         bTweetar.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +184,8 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane2.setViewportView(textoTweetAtual);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -183,28 +193,30 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(textoUsuario))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textoUsuario)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(bTweetar))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(bTweetar)))
-                .addContainerGap(210, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(lista, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(textoUsuario)
+                .addGap(22, 22, 22)
+                .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(bTweetar)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                    .addComponent(bTweetar)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(lista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -214,8 +226,8 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,6 +250,8 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
             if(perfilUsuario == null){
                 System.out.println("Não há usuário.");
                 textoProcurarUsuario.setText("");
+                lista.removeAll();
+                textoSeguir.setText("");
                 return;
             } else{
                 textoProcurarUsuario.setText("");
@@ -266,25 +280,68 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bCriarPerfilActionPerformed
 
-    private void TweetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TweetsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TweetsActionPerformed
-
     private void bSeguirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSeguirActionPerformed
-        // TODO add your handling code here:
+        try{
+        String nome = textoSeguir.getText();
+        if(nome.isEmpty()){
+               return;
+           } else {
+               rede.seguir(perfilUsuario.getUsuario(), nome);
+               textoSeguir.setText("");
+               textoUsuarioSeguir.setText(nome);
+           }
+        } catch (PIException ex) {
+            System.out.println("Perfil Inexistente!");
+        } catch (PDException ex) {
+            System.out.println("Perfil desativado!");
+        } catch (SIException ex) {
+           System.out.println("Seguidor Inexistente!");
+        } 
     }//GEN-LAST:event_bSeguirActionPerformed
 
     private void bTimelineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTimelineActionPerformed
-        // TODO add your handling code here:
+        try {
+            Tweet[] vetor = rede.mostrar(rede.timeline(perfilUsuario.getUsuario()));
+            for(int i = 0; i < vetor.length; i++){
+                lista.add(vetor[i].getMensagem() + "    \n" + vetor[i].getHora().get(Calendar.HOUR_OF_DAY) + ":" + vetor[i].getHora().get(Calendar.MINUTE)+ ":" + vetor[i].getHora().get(Calendar.SECOND) + " " + vetor[i].getHora().get(Calendar.DAY_OF_MONTH) + "/" + vetor[i].getHora().get(Calendar.MONTH)+ "/" + vetor[i].getHora().get(Calendar.YEAR));
+            }
+        } catch (PIException ex) {
+            System.out.println("Perfil Inexistente!");
+        } catch (PDException ex) {
+            System.out.println("Perfil já desativado!");
+        }
     }//GEN-LAST:event_bTimelineActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void bCancelarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarPerfilActionPerformed
+        try {
+            rede.cancelarPerfil(perfilUsuario.getUsuario());
+        } catch (PIException ex) {
+            System.out.println("Perfil Inexistente!");
+        } catch (PDException ex) {
+            System.out.println("Perfil já desativado!");
+        }
+    }//GEN-LAST:event_bCancelarPerfilActionPerformed
 
     private void bTweetarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTweetarActionPerformed
-        // TODO add your handling code here:
+        try {
+            rede.tweetar(perfilUsuario.getUsuario(), textoTweetAtual.getText());
+            textoTweetAtual.setText("");
+            lista.removeAll();
+            for(int i = rede.tweets(perfilUsuario.getUsuario()).size() - 1; i >= 0; i--){
+                lista.add(rede.tweets(perfilUsuario.getUsuario()).get(i).getMensagem());
+            }
+        } catch (PIException ex) {
+            System.out.println("Perfil Inexistente!");
+        } catch (MFPException ex) {
+            System.out.println("Mensagem fora do padrão!");
+        } catch (PDException ex) {
+             System.out.println("Perfil desativado!");
+        }
     }//GEN-LAST:event_bTweetarActionPerformed
+
+    private void textoSeguirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoSeguirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textoSeguirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -324,21 +381,23 @@ public class interfaceMyTwitter extends javax.swing.JFrame {
     Perfil perfilUsuario;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Tweets;
     private javax.swing.JButton bBuscar;
+    private javax.swing.JButton bCancelarPerfil;
     private javax.swing.JButton bCriarPerfil;
     private javax.swing.JButton bSeguir;
     private javax.swing.JButton bTimeline;
     private javax.swing.JButton bTweetar;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelBuscar;
+    private java.awt.List lista;
     private javax.swing.JTextField textoCriarPerfil;
     private javax.swing.JTextField textoProcurarUsuario;
-    private javax.swing.JTextArea textoTweetAtual;
+    private javax.swing.JTextField textoSeguir;
+    private javax.swing.JEditorPane textoTweetAtual;
     private javax.swing.JLabel textoUsuario;
+    private javax.swing.JLabel textoUsuarioSeguir;
     // End of variables declaration//GEN-END:variables
 }
