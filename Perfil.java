@@ -6,18 +6,28 @@ import mytwitter.perfil.tweet.Tweet;
 public abstract class Perfil {
     private String usuario;
     private Vector<String> seguidores;
+    private Vector<String> seguindo; //Vector que guarda os seguidores do perfil, ajuda na obtenção da timeline (todos os tweets dos perfis seguidos) do perfil
     private Vector<Tweet> timeline;
     private boolean ativo;
    
     public Perfil(String usuario) {
-        this.usuario = usuario;
+        this.usuario = "@" + usuario;
         this.seguidores = new Vector<String>();
+        this.seguindo = new Vector<String>();
         this.timeline = new Vector<Tweet>();
         this.ativo = true;
+    }
+
+    public Vector<String> getSeguindo() {
+        return seguindo;
     }
     
     public void addSeguidor(String usuario){
         seguidores.add(usuario);
+    }
+    
+     public void addSeguindo(String usuario){
+        seguindo.add(usuario);
     }
     
     public void addTweet(Tweet tweet){
@@ -44,8 +54,8 @@ public abstract class Perfil {
         return ativo;
     }
 
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setAtivo(boolean valor) {
+        this.ativo = valor;
     }
     
 }

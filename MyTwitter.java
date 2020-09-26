@@ -6,6 +6,7 @@ import excecoes.PEException;
 import excecoes.PIException;
 import excecoes.SIException;
 import excecoes.UJCException;
+import excecoes.UNCException;
 import java.util.Arrays;
 import mytwitter.repositorio.IRepositorioUsuario;
 import mytwitter.repositorio.Repositorio;
@@ -31,7 +32,7 @@ public class MyTwitter implements ITwitter{
         this.repositorio = repositorio;
     }
     
-    @Override //OK
+    @Override
     public void criarPerfil(Perfil usuario) throws UJCException, PEException { // Não está funcionando
         try{
             repositorio.cadastrar(usuario);
@@ -49,8 +50,13 @@ public class MyTwitter implements ITwitter{
         } else{
             if(conta.isAtivo()){
                 conta.setAtivo(false);
+                try {
+                    repositorio.atualizar(conta);
+                } catch (UNCException ex) {
+                    System.out.println("");
+                }
                 System.out.println("Conta de " + conta.getUsuario() + " cancelada.");
-            System.out.println("Ativo: " + conta.isAtivo());
+                System.out.println("Ativo: " + conta.isAtivo());
             } else {
                 throw new PDException(usuario);
             }
@@ -60,7 +66,7 @@ public class MyTwitter implements ITwitter{
     @Override
     public void tweetar(String usuario, String mensagem) throws PIException, MFPException{
         if(mensagem.length() > 140 || mensagem.length() < 1){
-            throw new MFPException();
+            throw new MFPException();       
         } else {
             Perfil conta = repositorio.buscar(usuario);
             if(conta == null){
@@ -69,13 +75,17 @@ public class MyTwitter implements ITwitter{
                 Tweet novo = new Tweet();
                 novo.setMensagem(mensagem);
                 novo.setUsuario(usuario);
-                novo.setData();
                 conta.addTweet(novo);
+                try {
+                    repositorio.atualizar(conta);
+                } catch (UNCException ex) {
+                    System.out.print("");
+                }
             }
         }
     }
 
-    @Override //OK*
+    @Override 
     public Vector<Tweet> timeline(String usuario) throws PIException, PDException{ 
         Perfil conta = repositorio.buscar(usuario);
         if(conta == null){
@@ -103,10 +113,11 @@ public class MyTwitter implements ITwitter{
             } else {
                 throw new PDException(usuario);
             }
+            
         }
     }
 
-    @Override //OK
+    @Override 
     public Vector<Tweet> tweets(String usuario) throws PIException, PDException{
         Perfil conta = repositorio.buscar(usuario);
         if(conta == null){
@@ -138,7 +149,12 @@ public class MyTwitter implements ITwitter{
                     } else{
                         conta1.addSeguidor(seguidor);
                         conta2.addSeguindo(seguido);
-                        System.out.println(conta1.getSeguidores()); //só para testes
+                        try {
+                            repositorio.atualizar(conta1);
+                            repositorio.atualizar(conta2);
+                        } catch (UNCException ex) {
+                            System.out.println("");
+                        }
                     }
                 }
             }
@@ -179,7 +195,7 @@ public class MyTwitter implements ITwitter{
         }
     }
     
-    public void mostrar(Vector<Tweet> tweets){
+    public Tweet[] mostrar(Vector<Tweet> tweets){
         int i = 0, j = 0;
         Tweet[] vetor = new Tweet[tweets.size()];
         while(j < tweets.size()){
@@ -187,23 +203,7 @@ public class MyTwitter implements ITwitter{
             j++;
         }
         Arrays.sort(vetor, new Sortbydate());
-        System.out.println("\nTimeline: ");
-        while(i < tweets.size()){
-            System.out.println(vetor[i].getUsuario());
-            System.out.println(vetor[i].getMensagem());
-            System.out.println("HORA: "+ vetor[i].getHora().get(Calendar.HOUR_OF_DAY) + ":" + vetor[i].getHora().get(Calendar.MINUTE)+ ":" + vetor[i].getHora().get(Calendar.SECOND));
-            System.out.println("DATA: "+ vetor[i].getHora().get(Calendar.DAY_OF_MONTH) + "/" + vetor[i].getHora().get(Calendar.MONTH)+ "/" + vetor[i].getHora().get(Calendar.YEAR) + "\n");
-            i++;
-        }
-    }
-    
-    public void mostraSeguidores(Vector<Perfil> pessoas){
-        int i = 0;
-        System.out.println("Timeline: ");
-        while(i < pessoas.size()){
-            System.out.println(pessoas.get(i).getUsuario());
-            i++;
-        }
+        return vetor;
     }
     
     class Sortbydate implements Comparator<Tweet>{ 
@@ -214,5 +214,5 @@ public class MyTwitter implements ITwitter{
                 return -1;
             }
         } 
-} 
+    } 
 }
