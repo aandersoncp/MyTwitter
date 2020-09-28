@@ -4,6 +4,7 @@ import excecoes.MFPException;
 import excecoes.PDException;
 import excecoes.PEException;
 import excecoes.PIException;
+import excecoes.PJSException;
 import excecoes.SIException;
 import excecoes.UJCException;
 import excecoes.UNCException;
@@ -132,21 +133,29 @@ public class MyTwitter implements ITwitter{
     }
 
     @Override //OK 
-    public void seguir(String seguidor, String seguido) throws PIException, PDException, SIException{
+    public void seguir(String seguidor, String seguido) throws PIException, PDException, SIException, PJSException{
         Perfil conta1 = repositorio.buscar(seguido);
         if(conta1 == null){
             throw new PIException(seguido);
+        } else if (!(conta1.isAtivo())){
+            throw new PDException(seguido);
         } else {
-            if(!(conta1.isAtivo())){
-                throw new PDException(seguido);
+            Perfil conta2 = repositorio.buscar(seguidor);
+            if(conta2 == null || seguidor.equals(seguido)){
+                throw new SIException(seguidor);
             } else{
-                Perfil conta2 = repositorio.buscar(seguidor);
-                if(conta2 == null){
-                    throw new SIException(seguidor);
+                if(!(conta2.isAtivo())){
+                    throw new PDException(seguidor);
                 } else{
-                    if(!(conta2.isAtivo())){
-                        throw new PDException(seguidor);
-                    } else{
+                    boolean existe = false;
+                    for(int i = 0; i < conta1.getSeguidores().size(); i++){
+                        if(conta2.getSeguindo().get(i).equals(seguido)){
+                             existe = true;
+                        }
+                    }
+                    if(existe == true){
+                        throw new PJSException(seguidor);
+                    } else {
                         conta1.addSeguidor(seguidor);
                         conta2.addSeguindo(seguido);
                         try {

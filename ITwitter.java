@@ -4,6 +4,7 @@ import excecoes.MFPException;
 import excecoes.PDException;
 import excecoes.PEException;
 import excecoes.PIException;
+import excecoes.PJSException;
 import excecoes.SIException;
 import excecoes.UJCException;
 import mytwitter.perfil.tweet.Tweet;
@@ -22,7 +23,7 @@ public interface ITwitter {
     
     public Vector<Tweet> tweets(String usuario) throws PIException, PDException;
     
-    public void seguir(String seguidor, String seguido) throws PIException, PDException, SIException;
+    public void seguir(String seguidor, String seguido) throws PIException, PDException, SIException, PJSException;
     
     public int numeroSeguidor(String usuario) throws PIException, PDException;
     
